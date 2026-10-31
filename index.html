@@ -32,6 +32,7 @@ header{padding:72px 0 40px;text-align:center}
 .rule svg{width:34px;height:34px;flex:none}
 .lede{max-width:640px;margin:34px auto 0;font:italic 400 clamp(18px,2.3vw,22px)/1.55 PlayI,Georgia,serif;color:#2f3a4c}
 h2{font:700 13px/1 Georgia,serif;padding-top:44px;letter-spacing:.32em;text-transform:uppercase;color:var(--red);text-align:center;margin:0 0 26px}
+.pubs.one{grid-template-columns:minmax(0,560px);justify-content:center}
 .pubs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px;padding:20px 0 64px}
 .pub{display:block;background:var(--paper);border:1px solid var(--line);border-radius:6px;overflow:hidden;text-decoration:none;box-shadow:0 1px 0 #00000008,0 10px 30px -18px #0b1f3a55;transition:transform .25s ease,box-shadow .25s ease}
 .pub:hover,.pub:focus-visible{transform:translateY(-4px);box-shadow:0 1px 0 #00000008,0 22px 40px -20px #0b1f3a88}
@@ -81,6 +82,16 @@ footer{padding:28px 0 40px;text-align:center;color:var(--mute);font-size:13.5px;
     <a class="pub" href="https://newyorkcityscream.com/">
       <img src="img/nyc.jpg" alt="New York City Scream" width="1200" height="630">
       <div><b>New York City Scream</b><span>Broadway, the opera, music and the city calendar for New York.</span><em>newyorkcityscream.com</em></div>
+    </a>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="also-h">
+  <h2 id="also-h">Also from Island News Media</h2>
+  <div class="pubs one">
+    <a class="pub" href="https://douggarceau.com/">
+      <img src="img/drums.jpg" alt="Amadeus School of Drums" width="1200" height="630" loading="lazy">
+      <div><b>Amadeus School of Drums</b><span>An interactive online drum school with hundreds of playable instruments, lessons from beginner to advanced, and the Drum Room.</span><em>douggarceau.com</em></div>
     </a>
   </div>
 </section>
