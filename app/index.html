@@ -22,16 +22,20 @@ body{display:flex;flex-direction:column;font:600 14px/1.2 "Helvetica Neue",Arial
 #frames iframe.on{visibility:visible}
 #bar{display:flex;background:#000;border-top:1px solid #2a2f36;padding-bottom:env(safe-area-inset-bottom,0px)}
 #bar button{flex:1;min-height:52px;padding:6px 2px;background:none;border:0;border-top:3px solid transparent;color:#9aa3ad;font:inherit;font-size:13px;cursor:pointer}
+#bar .ctl{flex:0 0 48px;font-size:11px;color:#c9d2e0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+#bar .ctl span{font-size:16px;line-height:1}
 #bar button[aria-current]{color:#fff;border-top-color:#e8b818}
 </style>
 </head>
 <body>
 <div id="frames"></div>
 <nav id="bar" aria-label="Publications">
+  <button type="button" class="ctl" id="backB" aria-label="Back"><span>&#9664;</span>Back</button>
   <button type="button" data-k="jt">Jamestown</button>
   <button type="button" data-k="ri">Rhode Island</button>
   <button type="button" data-k="bo">Boston</button>
   <button type="button" data-k="ny">New York</button>
+  <button type="button" class="ctl" id="homeB" aria-label="Home"><span>&#8962;</span>Home</button>
 </nav>
 <script>
 (()=>{
@@ -41,7 +45,8 @@ const PUBS={
   bo:{name:'The Boston Rambler',url:'https://thebostonrambler.com/?source=app'},
   ny:{name:'New York City Scream',url:'https://newyorkcityscream.com/?source=app'}
 };
-const box=document.getElementById('frames'),btns=[...document.querySelectorAll('#bar button')],made={};
+const backB=document.getElementById('backB');
+const box=document.getElementById('frames'),btns=[...document.querySelectorAll('#bar button[data-k]')],made={};
 let cur=null;
 function show(k){
   if(!PUBS[k])k='jt';
@@ -52,7 +57,9 @@ function show(k){
   document.title=PUBS[k].name;cur=k;
   try{localStorage.setItem('inm-pub',k)}catch(e){}
 }
-btns.forEach(b=>b.addEventListener('click',()=>show(b.dataset.k)));
+btns.forEach(b=>b.dataset.k&&b.addEventListener('click',()=>show(b.dataset.k)));
+backB.addEventListener('click',()=>history.back());
+document.getElementById('homeB').addEventListener('click',()=>{made[cur].src=PUBS[cur].url;});
 let start=new URLSearchParams(location.search).get('pub');
 if(!start){try{start=localStorage.getItem('inm-pub')}catch(e){}}
 show(start||'jt');
