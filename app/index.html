@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Island News</title>
+<meta name="description" content="Jamestown Island News, Rhode Island Hurricane, The Boston Rambler and New York City Scream in one phone app.">
+<meta name="theme-color" content="#0b0d10">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Island News">
+<link rel="manifest" href="/app/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/app/apple-touch-icon.png">
+<link rel="icon" href="/app/icon-192.png">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#0b0d10;color:#eee;overflow:hidden}
+body{display:flex;flex-direction:column;font:600 14px/1.2 "Helvetica Neue",Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+#frames{flex:1;position:relative;padding-top:env(safe-area-inset-top,0px)}
+#frames iframe{position:absolute;inset:env(safe-area-inset-top,0px) 0 0 0;width:100%;height:calc(100% - env(safe-area-inset-top,0px));border:0;background:#0b0d10;visibility:hidden}
+#frames iframe.on{visibility:visible}
+#bar{display:flex;background:#000;border-top:1px solid #2a2f36;padding-bottom:env(safe-area-inset-bottom,0px)}
+#bar button{flex:1;min-height:52px;padding:6px 2px;background:none;border:0;border-top:3px solid transparent;color:#9aa3ad;font:inherit;font-size:13px;cursor:pointer}
+#bar button[aria-current]{color:#fff;border-top-color:#e8b818}
+</style>
+</head>
+<body>
+<div id="frames"></div>
+<nav id="bar" aria-label="Publications">
+  <button type="button" data-k="jt">Jamestown</button>
+  <button type="button" data-k="ri">Rhode Island</button>
+  <button type="button" data-k="bo">Boston</button>
+  <button type="button" data-k="ny">New York</button>
+</nav>
+<script>
+(()=>{
+const PUBS={
+  jt:{name:'Jamestown Island News',url:'https://jamestownislandnews.com/?source=app'},
+  ri:{name:'Rhode Island Hurricane',url:'https://rhodeislandhurricane.com/?source=app'},
+  bo:{name:'The Boston Rambler',url:'https://thebostonrambler.com/?source=app'},
+  ny:{name:'New York City Scream',url:'https://newyorkcityscream.com/?source=app'}
+};
+const box=document.getElementById('frames'),btns=[...document.querySelectorAll('#bar button')],made={};
+let cur=null;
+function show(k){
+  if(!PUBS[k])k='jt';
+  if(k===cur&&made[k]){made[k].src=PUBS[k].url;return;} // tap again = back to that paper's front page
+  if(!made[k]){const f=document.createElement('iframe');f.title=PUBS[k].name;f.src=PUBS[k].url;f.allow='autoplay; fullscreen; clipboard-write; web-share';box.appendChild(f);made[k]=f;}
+  for(const x in made)made[x].classList.toggle('on',x===k);
+  btns.forEach(b=>b.dataset.k===k?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'));
+  document.title=PUBS[k].name;cur=k;
+  try{localStorage.setItem('inm-pub',k)}catch(e){}
+}
+btns.forEach(b=>b.addEventListener('click',()=>show(b.dataset.k)));
+let start=new URLSearchParams(location.search).get('pub');
+if(!start){try{start=localStorage.getItem('inm-pub')}catch(e){}}
+show(start||'jt');
+if('serviceWorker' in navigator)navigator.serviceWorker.register('/app/sw.js',{scope:'/app/'}).catch(()=>{});
+})();
+</script>
+</body>
+</html>
